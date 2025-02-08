@@ -1,48 +1,73 @@
-from fastapi import FastAPI, UploadFile, File, Form
-import openai
+import os
+import google.generativeai as genai
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import pytesseract
 from PIL import Image
-import os
-from database import collection
+import fitz  # PyMuPDF
 
+# ✅ Set up Gemini API Key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("❌ Gemini API key is missing. Set it using 'export GEMINI_API_KEY=your_key'")
+
+genai.configure(api_key=GEMINI_API_KEY)
+
+# ✅ Initialize FastAPI app
 app = FastAPI()
 
-# Fetch OpenAI API Key from environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# ✅ Add CORS middleware to allow frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all domains (change for production)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
-def extract_text_from_image(image_file):
-    image = Image.open(image_file)
-    return pytesseract.image_to_string(image)
+# ✅ Extract text from a legal document
+def extract_text_from_file(file: UploadFile):
+    """Extract text from uploaded PDF or image file."""
+    file_extension = file.filename.split(".")[-1].lower()
 
-def simplify_text(text):
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": f"Simplify this form:\n{text}"}]
-    )
-    return response["choices"][0]["message"]["content"]
+    if file_extension in ["jpg", "jpeg", "png"]:
+        image = Image.open(file.file)
+        return pytesseract.image_to_string(image)
 
-def autofill_fields(text):
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": f"Autofill this form based on common patterns:\n{text}"}]
-    )
-    return response["choices"][0]["message"]["content"]
+    elif file_extension == "pdf":
+        pdf_document = fitz.open(stream=file.file.read(), filetype="pdf")
+        text = "\n".join([page.get_text() for page in pdf_document])
+        return text
 
-@app.post("/process-form/")
-async def process_form(file: UploadFile = File(...), user_id: str = Form(...)):
-    extracted_text = extract_text_from_image(file.file)
-    simplified_text = simplify_text(extracted_text)
-    autofilled_data = autofill_fields(extracted_text)
+    else:
+        raise HTTPException(status_code=400, detail="❌ Unsupported file type. Upload a PDF or an Image.")
 
-    form_data = {
-        "user_id": user_id,
+# ✅ Function to simplify legal text into bullet points
+def simplify_legal_text(text: str) -> str:
+    """Use Gemini AI to simplify legal documents and highlight key points."""
+    try:
+        model = genai.GenerativeModel("gemini-pro")
+        response = model.generate_content(f"""
+        Read the following legal document and simplify it into **bullet points**.
+        Highlight **important clauses, penalties, deadlines, legal responsibilities, and key conditions** in **bold**:
+        
+        {text}
+        """)
+        return response.text.strip()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"🚨 Gemini API Error: {str(e)}")
+
+# ✅ API Endpoint to process legal documents
+@app.post("/process-legal-document/")
+async def process_legal_document(file: UploadFile = File(...)):
+    extracted_text = extract_text_from_file(file)
+    simplified_text = simplify_legal_text(extracted_text)
+    return {
         "original_text": extracted_text,
-        "simplified_text": simplified_text,
-        "autofilled_data": autofilled_data
+        "simplified_text": simplified_text
     }
-    collection.insert_one(form_data)
-    return form_data
 
-@app.get("/user-forms/{user_id}")
-async def get_user_forms(user_id: str):
-    return list(collection.find({"user_id": user_id}, {"_id": 0}))
+# ✅ API health check
+@app.get("/")
+async def root():
+    return {"message": "✅ Legal Document Simplifier API is running!"}

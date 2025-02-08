@@ -4,27 +4,36 @@ import axios from "axios";
 function FormUpload({ userId }) {
     const [file, setFile] = useState(null);
     const [formData, setFormData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleUpload = async () => {
-        const data = new FormData();
-        data.append("file", file);
-        data.append("user_id", userId);
+        if (!file) return alert("Please select a file!");
 
-        const response = await axios.post("http://localhost:8000/process-form/", data);
-        setFormData(response.data);
+        setLoading(true);
+        try {
+            const data = new FormData();
+            data.append("file", file);
+            data.append("user_id", userId);
+
+            const response = await axios.post("http://localhost:8000/process-legal-document/", data);
+            setFormData(response.data);
+        } catch (error) {
+            console.error("🚨 Upload failed:", error);
+        }
+        setLoading(false);
     };
 
     return (
         <div>
             <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-            <button onClick={handleUpload}>Upload</button>
+            <button onClick={handleUpload} disabled={loading}>
+                {loading ? "Uploading..." : "Upload"}
+            </button>
 
             {formData && (
                 <div>
                     <h3>Simplified Form:</h3>
                     <p>{formData.simplified_text}</p>
-                    <h3>Autofilled Data:</h3>
-                    <p>{formData.autofilled_data}</p>
                 </div>
             )}
         </div>
