@@ -50,12 +50,14 @@ function App() {
             <Chatbot />
 
             {/* ✅ Upload File */}
-            <div>
-                <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-                <button onClick={handleUpload} disabled={loading} style={{ marginLeft: "10px" }}>
-                    {loading ? "Uploading..." : "Upload & Simplify"}
-                </button>
-            </div>
+            <div className="upload-section">
+            <label className="file-input-label">
+                        Choose File
+                        <input type="file" onChange={(e) => setFile(e.target.files[0])} className="file-input" />
+                    </label>                    <button onClick={handleUpload} disabled={loading} className="upload-button">
+                        {loading ? "Uploading..." : "Upload & Simplify"}
+                    </button>
+                </div>
 
             {/* ✅ Display Simplified Document */}
             {result && result.simplified_text && (
@@ -80,7 +82,102 @@ function App() {
                     <p style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: result.risky_clauses.replace(/\n/g, "<br>") }} />
                 </div>
             )}
+
+            {/* Styles */}
+            <style>
+                {`
+                    .header-bar {
+                        background-color: #002f6c;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 15px;
+                    }
+
+                    .logo {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        margin-right: 10px;
+                    }
+
+                    .title {
+                        color: white;
+                        font-size: 24px;
+                        font-weight: bold;
+                    }
+
+                    .container {
+                        text-align: center;
+                        padding: 20px;
+                        font-family: Arial, sans-serif;
+                    }
+
+                    .main-title {
+                        font-size: 28px;
+                        margin-bottom: 20px;
+                    }
+
+                    .upload-section {
+                        margin: 20px 0;
+                    }
+
+                    .upload-button {
+                        background-color: white;
+                        color: #6c8f7c;
+                        border-color: 6c8f7c;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        margin-left: 10px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    .upload-button:hover {
+                        background-color: #4d6f5c;
+                        color: white;
+                    }
+
+                    .file-input-label {
+                        background-color: #6c8f7c;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    .file-input-label:hover {
+                        background-color: #4d6f5c;
+                    }
+
+                    .file-input {
+                        display: none;
+                    }
+                    .section {
+                        margin-top: 20px;
+                        padding: 20px;
+                        border-radius: 8px;
+                        text-align: left;
+                    }
+
+                    .simplified_text {
+                        background: #fff3e9;
+                    }
+
+                    .key-terms {
+                        background: #e3f2fd;
+                    }
+
+                    .risky-clauses {
+                        background: #ffebee;
+                    }
+                `}
+            </style>
         </div>
+        
     );
 }
 

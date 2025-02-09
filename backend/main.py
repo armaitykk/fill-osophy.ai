@@ -54,7 +54,7 @@ def simplify_legal_text(text):
 
 def extract_key_terms(text):
     model = genai.GenerativeModel("gemini-pro")
-    response = model.generate_content(f"Extract key legal terms:\n\n{text}")
+    response = model.generate_content(f"Extract key legal terms from this document and define in a simple manner:\n\n{text}")
     return response.text.strip()
 
 def detect_risky_clauses(text):

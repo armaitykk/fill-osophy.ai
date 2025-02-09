@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #007bff;
+    background-color: #fff3e9;
     color: white;
     border: none;
     border-radius: 50%;
@@ -94,7 +94,7 @@
 }
 
 .message.user {
-    background-color: #007bff;
+    background-color: #fff3e9;
     color: white;
     align-self: flex-end;
     border-radius: 15px 15px 0 15px;
