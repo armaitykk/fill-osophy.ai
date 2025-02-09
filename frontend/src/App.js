@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Chatbot from "./components/Chatbot";
+import Header from "./components/Header";
 
 function App() {
     const [file, setFile] = useState(null);
@@ -43,8 +44,9 @@ function App() {
     };
 
     return (
-        <div style={{ textAlign: "center", padding: "20px", fontFamily: "Arial, sans-serif" }}>
-            <h1>📜 AI Legal Document Simplifier</h1>
+        <div style={{ textAlign: "center", paddingBottom: "20px", fontFamily: "Arial, sans-serif" }}>
+            <Header />
+
             <Chatbot />
 
             {/* ✅ Upload File */}

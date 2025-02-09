@@ -1,0 +1,21 @@
+.header {
+    height: 60px;
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;  /* Vertically center the items */
+    justify-content: center;  /* Horizontally center the items */
+    gap: 10px;  /* Space between logo and app name */
+  }
+  
+  .logo {
+    height: auto;
+  }
+  
+  .app-name {
+    color: white;
+    font-size: 24px;
+    margin: 0;
+  }
+  
