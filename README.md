@@ -1,3 +1,5 @@
+**Lawgorithm**
+
 This is a FastAPI-based application that uses Generative AI to process legal documents. The API extracts, simplifies, and analyzes legal documents by:
 
 Extracting the text from images or PDFs.
