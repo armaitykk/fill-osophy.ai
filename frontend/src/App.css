@@ -36,3 +36,38 @@
     transform: rotate(360deg);
   }
 }
+
+/* Ensure body and html take full height and allow for a sticky footer initially */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+}
+
+/* Main content area to grow and take up space */
+.main-content {
+  flex: 1;
+  overflow: auto;
+  transition: padding-bottom 0.3s ease-in-out; /* Smooth transition when footer changes position */
+}
+
+/* Footer position */
+footer {
+  background-color: #02343d;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  position: relative; /* Default to relative for flow */
+  bottom: 0;
+  transition: position 0.3s ease-in-out; /* Smooth transition for position change */
+}
+
+/* Footer only gets "fixed" when there isn't enough content to push it down */
+footer.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

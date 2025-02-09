@@ -1,0 +1,17 @@
+/* Footer.css */
+
+footer {
+    background-color: #02343d;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: relative; /* Footer will naturally stick to bottom */
+  }
+  
+  
+  .footer-container p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
