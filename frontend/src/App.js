@@ -102,29 +102,34 @@ function App() {
                 </button>
 
                 {/* ✅ Display Simplified Document */}
-                {result && result.simplified_text && (
-                    <div style={{ marginTop: "20px", textAlign: "left", padding: "20px", background: "#fff3e9", borderRadius: "8px" }}>
-                        <h2>📌 Simplified Document</h2>
-                        <p dangerouslySetInnerHTML={{ __html: result.simplified_text.replace(/\n/g, "<br>") }} />
+                {result?.simplified_text && (
+                <div className="simplified-document">
+                <h3>📌 Simplified Document</h3>
+                <p dangerouslySetInnerHTML={{ __html: result.simplified_text.replace(/\n/g, "<br>") }} />
                     </div>
                 )}
 
                 {/* ✅ Display Key Legal Terms */}
-                {result && result.key_terms && (
-                    <div style={{ marginTop: "20px", textAlign: "left", padding: "20px", background: "#e3f2fd", borderRadius: "8px" }}>
-                        <h2>📖 Key Legal Terms</h2>
-                        <p dangerouslySetInnerHTML={{ __html: result.key_terms.replace(/\n/g, "<br>") }} />
-                    </div>
-                )}
+                {result?.key_terms && (
+    <div className="key-legal-terms">
+        <h3>📖 Key Legal Terms</h3>
+        <ul>
+            {result.key_terms.split("\n").map((term, index) => (
+                <li key={index}><strong>{term.split(":")[0]}</strong>: {term.split(":")[1]}</li>
+                ))}
+        </ul>
+    </div>
+)}
+
 
                 {/* ✅ Display Risky Clauses */}
                 {result && result.risky_clauses && (
-                    <div style={{ marginTop: "20px", textAlign: "left", padding: "20px", background: "#ffebee", borderRadius: "8px" }}>
-                        <h2>⚠️ Risky Clauses Detected</h2>
-                        <p style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: result.risky_clauses.replace(/\n/g, "<br>") }} />
-                    </div>
-                )}
+ <div className="risky-clauses">
 
+ <h3>⚠️ Risky Clauses Detected</h3>
+ <p style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: result.risky_clauses.replace(/\n/g, "<br>") }} />
+</div>
+)}
                 {/* Styles */}
                 <style>
                     {`
@@ -216,6 +221,106 @@ function App() {
                         .risky-clauses {
                             background: #ffebee;
                         }
+                        .simplified-document {
+                            margin-top: 30px;
+
+                            background-color: #fdfaf6; /* Light beige background */
+                            padding: 25px;
+                            border-radius: 10px;
+                            text-align: left;
+                            font-family: 'Inter', sans-serif;
+                            line-height: 1.6;
+                            margin-bottom: 25px; /* Add space between sections */
+    
+                        }
+                        
+                        .simplified-document h3 {
+                            font-family: 'EB Garamond', serif;
+                            font-size: 24px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            margin-bottom: 10px;
+                        }
+                        
+                        .simplified-document p {
+                            font-size: 18px;
+                            color: #333;
+                            font-weight: 400;
+                        }
+                        
+                        .simplified-document strong {
+                            font-weight: 600;
+                            color: #000;
+                        }
+    
+                        .key-legal-terms {
+                            
+                            background-color: #e3f2fd; /* Soft blue-green background */
+                            padding: 25px;
+                            border-radius: 10px;
+                            text-align: left;
+                            font-family: 'Inter', sans-serif;
+                            line-height: 1.6;
+                            margin-bottom: 30px;
+    
+                        }
+                        
+                        .key-legal-terms h3 {
+                            font-family: 'EB Garamond', serif;
+                            font-size: 24px;
+                            font-weight: 700;
+                            color: #1a1a1a;
+                            margin-bottom: 10px;
+    
+                        }
+                        
+                        .key-legal-terms ul {
+                            list-style-type: none;
+                            padding: 0;
+                        }
+                        
+                        .key-legal-terms li {
+                            font-size: 18px;
+                            color: #333;
+                            font-weight: 400;
+                            margin-bottom: 5px;
+                        }
+                        
+                        .key-legal-terms li strong {
+                            font-weight: 600;
+                            color: #000;
+                        }
+                        
+                        .risky-clauses {
+                            background-color: #ffebee; /* Light red background */
+                            padding: 25px;
+                            border-radius: 10px;
+                            text-align: left;
+                            font-family: 'Inter', sans-serif;
+                            line-height: 1.6;
+                            margin-bottom: 30px;
+
+                        }
+                        
+                        .risky-clauses h3 {
+                            font-family: 'EB Garamond', serif; /* Matching heading font */
+                            font-size: 28px;
+                            font-weight: 700;
+                            color: black; /* Dark red for importance */
+                        }
+                        
+                        .risky-clauses p {
+                            font-family: 'Inter', sans-serif;
+                            font-size: 16px;
+                            color: #333;
+                        }
+                        
+                        .risky-clauses strong {
+                            font-weight: bold;
+                            color: #b71c1c; /* Even darker red for emphasis */
+                        }
+                        
+                        
                     `}
                 </style>
             </main>
