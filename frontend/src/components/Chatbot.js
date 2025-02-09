@@ -58,11 +58,16 @@ function Chatbot() {
                         ))}
                     </div>
                     <div className="chat-footer">
-                        <input
+                    <input
                             type="text"
                             placeholder="Ask about your document..."
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    sendMessage();
+                                }
+                            }}
                         />
                         <button onClick={sendMessage} disabled={loading}>
                             {loading ? "..." : "Send"}
@@ -71,74 +76,6 @@ function Chatbot() {
                 </div>
             )}
 
-            <style>
-                {`
-                    .chatbot-button {
-                        position: fixed;
-                        bottom: 20px;
-                        right: 20px;
-                        background-color: #007bff;
-                        color: white;
-                        border: none;
-                        border-radius: 50%;
-                        width: 50px;
-                        height: 50px;
-                        font-size: 20px;
-                        cursor: pointer;
-                    }
-
-                    .chatbot-window {
-                        position: fixed;
-                        bottom: 80px;
-                        right: 20px;
-                        width: 300px;
-                        background: white;
-                        border-radius: 10px;
-                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .chat-header {
-                        background: #007bff;
-                        color: white;
-                        padding: 10px;
-                        display: flex;
-                        justify-content: space-between;
-                        border-radius: 10px 10px 0 0;
-                    }
-
-                    .chat-body {
-                        padding: 10px;
-                        max-height: 300px;
-                        overflow-y: auto;
-                    }
-
-                    .chat-footer {
-                        display: flex;
-                        padding: 10px;
-                        border-top: 1px solid #ccc;
-                    }
-
-                    .message {
-                        padding: 8px;
-                        border-radius: 5px;
-                        margin-bottom: 5px;
-                        max-width: 80%;
-                    }
-
-                    .message.user {
-                        background-color: #007bff;
-                        color: white;
-                        align-self: flex-end;
-                    }
-
-                    .message.bot {
-                        background-color: #f1f1f1;
-                        align-self: flex-start;
-                    }
-                `}
-            </style>
         </div>
     );
 }
