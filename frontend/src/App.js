@@ -61,7 +61,7 @@ function App() {
 
             {/* ✅ Display Simplified Document */}
             {result && result.simplified_text && (
-                <div style={{ marginTop: "20px", textAlign: "left", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>
+                <div style={{ marginTop: "20px", textAlign: "left", padding: "20px", background: "#fff3e9", borderRadius: "8px" }}>
                     <h2>📌 Simplified Document</h2>
                     <p dangerouslySetInnerHTML={{ __html: result.simplified_text.replace(/\n/g, "<br>") }} />
                 </div>
