@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
-import { jsPDF } from "jspdf";
 import Chatbot from "./components/Chatbot";
 import Header from "./components/Header";
-import { jsPDF } from "jspdf";
 import Footer from "./components/Footer"; 
 import "./App.css";
 
@@ -59,47 +57,6 @@ function App() {
         setLoading(false);
     };
 
-    const handleDownloadPDF = () => {
-        const doc = new jsPDF();
-    
-        // Extract the file name (without extension) and append "Notes"
-        const fileName = file.name.split('.').slice(0, -1).join('.'); // Remove the file extension
-        const title = `${fileName} Notes`;
-    
-        // Set margins for the PDF
-        const margin = 10;
-        const pageWidth = doc.internal.pageSize.width;
-        const pageHeight = doc.internal.pageSize.height;
-    
-        // Title styling
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
-        doc.text(title, pageWidth / 2, margin + 10, null, null, 'center'); // Title at the top of the page
-    
-        // Content
-        const content = `
-            Simplified Document:
-            ${result.simplified_text}
-    
-            Key Legal Terms:
-            ${result.key_terms}
-    
-            Risky Clauses Detected:
-            ${result.risky_clauses}
-        `;
-    
-        // Use splitTextToSize to ensure that the content fits within the page width
-        const lines = doc.splitTextToSize(content, pageWidth - 2 * margin);
-    
-        // Set font for the content and add it below the title
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(12);
-        doc.text(lines, margin, margin + 20); // Adding some vertical space below the title
-    
-        // Save the PDF
-        doc.save(`${fileName}-Notes.pdf`);
-    };
-    
     return (
         <div style={{ 
             display: "flex", 
@@ -140,7 +97,7 @@ function App() {
                     </div>
                 </div>
 
-                <button className="upload-button" onClick={handleUpload} disabled={loading || !file} style={{ marginTop: "10px" }}>
+                <button class = "upload-button" onClick={handleUpload} disabled={loading || !file} style={{ marginTop: "10px" }}>
                     {loading ? "Uploading..." : "Upload & Simplify"}
                 </button>
 
@@ -173,18 +130,6 @@ function App() {
  <p style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: result.risky_clauses.replace(/\n/g, "<br>") }} />
 </div>
 )}
-
-                {/* ✅ Download PDF Button */}
-                {result && (
-                    <button 
-                        className="download-button"
-                        onClick={handleDownloadPDF}
-                        style={{ marginTop: "20px", padding: "10px 20px", background: "#6c8f7c", color: "white", borderRadius: "5px", cursor: "pointer" }}
-                    >
-                        Download PDF
-                    </button>
-                )}
-
                 {/* Styles */}
                 <style>
                     {`
