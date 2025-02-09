@@ -101,6 +101,7 @@
     border-radius: 15px 15px 0 15px;
     margin-left: 50px !important;
     margin-bottom: 15px;
+    text-align: left;
 }
 
 .message.bot {
@@ -109,6 +110,7 @@
     align-self: flex-start;
     border-radius: 15px 15px 15px 0;
     margin-bottom: 15px;
+    text-align: left;
 }
 
 .chat-header button {
