@@ -1,94 +1,34 @@
-**Lawgorithm**
+# **Lawgorithm** - AI-Powered Legal Document Simplifier
 
-This is a FastAPI-based application that uses Generative AI to process legal documents. The API extracts, simplifies, and analyzes legal documents by:
+## **Team Members**
+- Armaity Katki
+- Bhuvana Kode
 
-Extracting the text from images or PDFs.
-Simplifying the legal text into easy-to-understand bullet points.
-Identifying key legal terms and definitions.
-Detecting risky or unfair clauses in the document.
-Features
-Text Extraction: Extracts text from both images (JPG, PNG) and PDFs.
-Text Simplification: Uses Generative AI (Gemini AI) to summarize and simplify complex legal text.
-Key Term Extraction: Identifies and defines key legal terms in the document.
-Risky Clause Detection: Flags potential legal risks or unfair clauses in the document.
-Requirements
-Backend Requirements
-Python 3.11+
+## **Purpose of the Project**
+Lawgorithm is an AI-powered tool designed to simplify complex legal documents. The purpose of the project is to help users easily understand legal texts by providing simplified summaries, extracting key terms, and highlighting potentially risky clauses.
 
-Install dependencies:
+## **Tools Utilized**
+- **Backend Framework**: FastAPI - Used for building the API that powers the application.
+- **AI Model**: **Google Gemini API** - Utilized for generating summaries, extracting key terms, and detecting risky clauses from the uploaded legal documents.
+- **Text Extraction Libraries**: 
+  - **PyTesseract** - For optical character recognition (OCR) to extract text from images (e.g., JPG, PNG).
+  - **PyMuPDF (fitz)** - For extracting text from PDF documents.
+- **Cloud Services**: 
+  - **Google Gemini API** - Used for AI-powered text processing.
+- **Python Libraries**: 
+  - **Pillow** - For image processing.
+  - **FastAPI Middleware (CORSMiddleware)** - For handling cross-origin resource sharing.
 
-bash
-Copy
-Edit
-pip install -r requirements.txt
-fastapi - Web framework to build the API.
-uvicorn - ASGI server to run the app.
-google-generativeai - For calling the Gemini API.
-pytesseract - OCR tool to extract text from images.
-pillow - Python Imaging Library (PIL) for image processing.
-PyMuPDF - Library to extract text from PDFs.
-Setting Up the API Key
-To use Gemini API, you'll need to set up your API key.
+## **Problems We Ran Into and How We Overcame Them**
+1. **File Format Handling**: Extracting text from different file formats, such as PDFs and images, was initially challenging. We overcame this by integrating multiple libraries (PyTesseract for image text extraction and PyMuPDF for PDF text extraction) and handling edge cases for each file type to ensure accurate text extraction.
+   
+2. **AI Model Integration**: Integrating the **Google Gemini API** was initially complex, as we had to ensure that it could handle large, complex legal documents efficiently. We spent time optimizing how we used the API to process documents and handle large inputs, adjusting the prompt structure to fit the model’s requirements.
 
-Sign up for Google Gemini API and get your API key.
-Set the environment variable for the API key:
-bash
-Copy
-Edit
-export GEMINI_API_KEY=your-api-key-here
-Running the API
-Make sure your environment is set up with the required dependencies and API key.
+3. **API Limitations**: While using the OpenAI API earlier in the project, we struggled with reaching usage limits. The system did not display limits properly in real-time, and it took several hours before we realized we had exceeded the usage. We switched to Gemini to continue our work and adjusted our usage strategy to avoid exceeding limits.
 
-Start the FastAPI server using uvicorn:
-
-bash
-Copy
-Edit
-uvicorn main:app --reload
-The API will be running on http://127.0.0.1:8000.
-
-API Endpoints
-1. POST /process-legal-document/
-Processes an uploaded legal document and returns:
-
-The original extracted text.
-A simplified version of the text.
-A list of key legal terms and their definitions.
-A list of risky or unfair clauses flagged in the document.
-Request:
-Content-Type: multipart/form-data
-Body: The legal document file (PDF, JPG, PNG)
-Response:
-json
-Copy
-Edit
-{
-  "original_text": "Extracted text from the document",
-  "simplified_text": "Simplified version of the document",
-  "key_terms": "Key legal terms and definitions",
-  "risky_clauses": "List of flagged risky clauses"
-}
-2. GET /
-Returns a simple message indicating that the API is running.
-
-json
-Copy
-Edit
-{
-  "message": "✅ Legal Document Simplifier API is running!"
-}
-Frontend Integration
-The backend API is designed to work with a React frontend. Ensure the frontend is set up to send files to the /upload endpoint of the backend. CORS is enabled for all origins by default, but this should be restricted in production.
-
-Troubleshooting
-CORS Errors:
-If you're running the frontend locally, make sure CORS middleware is properly configured in the backend. The current configuration allows all origins.
-
-OCR or PDF Text Extraction Issues:
-If the extraction process fails, make sure pytesseract is installed correctly, and the necessary OCR tools (like Tesseract) are configured on your system.
-
-Gemini API Errors:
-If you encounter errors related to the Gemini API, make sure the API key is set up correctly and that you're not exceeding API usage limits.
-
-License
-MIT License - See LICENSE for more details.
+## **Credits**
+- **Google Gemini API** for providing powerful AI-driven text generation capabilities used in the project.
+- **PyMuPDF** (https://pymupdf.readthedocs.io/en/latest/) for extracting text from PDF files.
+- **PyTesseract** (https://github.com/madmaze/pytesseract) for optical character recognition in image files.
+- **FastAPI** for enabling the rapid development of our backend API.
+- **ChatGPT** for providing starter code and assisting with debugging during the development process.
