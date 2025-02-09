@@ -41,7 +41,7 @@ function Chatbot() {
     return (
         <div>
             {/* Chatbot Button */}
-            <button onClick={toggleChat} className="chatbot-button">💬 Chat</button>
+            <button onClick={toggleChat} className="chatbot-button">💬</button>
 
             {/* Chatbot Window */}
             {isOpen && (
