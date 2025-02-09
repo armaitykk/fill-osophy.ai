@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
+import { useDropzone } from "react-dropzone";
 import Chatbot from "./components/Chatbot";
 import Header from "./components/Header";
 
@@ -7,6 +8,18 @@ function App() {
     const [file, setFile] = useState(null);
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const onDrop = useCallback((acceptedFiles) => {
+        if (acceptedFiles.length > 0) {
+            setFile(acceptedFiles[0]);
+        }
+    }, []);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: ".pdf,.doc,.docx,.txt",
+        multiple: false
+    });
 
     const handleUpload = async () => {
         if (!file) {
@@ -25,7 +38,6 @@ function App() {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
 
-            // Ensure the response has all the required fields
             setResult({
                 simplified_text: response.data.simplified_text || "No summary available.",
                 key_terms: response.data.key_terms || "No key terms found.",
@@ -46,18 +58,38 @@ function App() {
     return (
         <div style={{ textAlign: "center", paddingBottom: "20px", fontFamily: "Arial, sans-serif" }}>
             <Header />
-
             <Chatbot />
 
-            {/* ✅ Upload File */}
-            <div className="upload-section">
-            <label className="file-input-label">
-                        Choose File
-                        <input type="file" onChange={(e) => setFile(e.target.files[0])} className="file-input" />
-                    </label>                    <button onClick={handleUpload} disabled={loading} className="upload-button">
-                        {loading ? "Uploading..." : "Upload & Simplify"}
-                    </button>
+            {/* ✅ Drag & Drop File Input */}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                    {...getRootProps()}
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        border: "2px dashed #02343d",
+                        width: "80%",
+                        padding: "30px",
+                        borderRadius: "10px",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        background: isDragActive ? "#f0f8ff" : "#f9f9f9"
+                    }}
+                >
+                    <input {...getInputProps()} />
+                    {file ? (
+                        <p>📄 {file.name}</p>
+                    ) : isDragActive ? (
+                        <p>📂 Drop the file here...</p>
+                    ) : (
+                        <p>📁 Drag & drop a file here, or click to select one</p>
+                    )}
                 </div>
+            </div>
+
+            <button class = "upload-button" onClick={handleUpload} disabled={loading || !file} style={{ marginTop: "10px" }}>
+                {loading ? "Uploading..." : "Upload & Simplify"}
+            </button>
 
             {/* ✅ Display Simplified Document */}
             {result && result.simplified_text && (
