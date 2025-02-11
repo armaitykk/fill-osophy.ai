@@ -1,7 +1,7 @@
 import pymongo
 import certifi
 
-MONGO_URI = "mongodb+srv://armaitykatki:fillosophyai@cluster0.iax4s.mongodb.net/?retryWrites=true&w=majority"
+MONGO_URI = ""
 
 try:
     # Attempt to connect to MongoDB using the certifi CA bundle
